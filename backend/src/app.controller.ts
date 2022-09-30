@@ -41,12 +41,24 @@ export class AppController {
 
   @Get('/facebook/redirect')
   @UseGuards(AuthGuard('facebook'))
-  async facebookLoginRedirect(@Req() req): Promise<any> {
-    //console.log('asnj');
-    return {
-      statusCode: HttpStatus.OK,
-      data: req.user.user,
-    };
+  async facebookLoginRedirect(@Req() req, @Res() res) {
+    console.log(req.user.password, '1');
+    const reg = new RegistrationReqModel();
+
+    reg.email = req.user.email;
+    reg.firstName = req.user.firstName;
+    reg.lastName = req.user.lastName;
+    reg.password = req.user.password;
+
+    console.log(await this.userService.registerUser(reg), 'print');
+    //console.log(op);
+    //const log = await this.userService.login(req.user.email);
+    //console.log(log);
+    //return this.appService.googleLogin(req);
+
+    return res.redirect(
+      `http://localhost:${PORT}/users/login1?email=${req.user.email}`,
+    );
   }
 
   @Get('google')

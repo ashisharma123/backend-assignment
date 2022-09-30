@@ -12,4 +12,4 @@ RUN npm install
 COPY . .
 
 EXPOSE 8080
-CMD [ "node", "server.js" ]
+CMD [ "node", "/Users/ashishsharma/Downloads/assignment_backend/backend/src/main.ts" ]

@@ -4,13 +4,14 @@ import { Profile, Strategy } from 'passport-facebook';
 import { RegistrationReqModel } from 'src/models/registration.req.model';
 import { UsersService } from 'src/users/users.service';
 
+const PORT = process.env.PORT;
 @Injectable()
 export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
   constructor(private readonly userService: UsersService) {
     super({
-      clientID: 485471973237814,
-      clientSecret: 'b5cf14be8327c9016885f950b7859526',
-      callbackURL: 'http://localhost:3000/facebook/redirect',
+      clientID: process.env.APP_ID,
+      clientSecret: process.env.APP_SECRET,
+      callbackURL: `http://localhost:${PORT}/facebook/redirect`,
       scope: 'email',
       profileFields: ['emails', 'name'],
     });
@@ -28,7 +29,7 @@ export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
       email: emails[0].value,
       firstName: name.givenName,
       lastName: name.familyName,
-      Facebook_id: id,
+      password: accessToken,
     };
     //await this.user_profile(user);
     const payload = {
@@ -37,7 +38,7 @@ export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
     };
     console.log(payload);
 
-    done(null, payload);
+    done(null, user);
   }
 
   async user_profile(user: any) {

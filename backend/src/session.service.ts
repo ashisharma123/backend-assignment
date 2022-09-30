@@ -10,7 +10,7 @@ export class SessionService {
 
   async createSession(key: string, value: string) {
     await this.storeClient.set(key, value);
-    await this.storeClient.expire(key, 60 * 2);
+    await this.storeClient.expire(key, 60 * 10);
     return true;
   }
 
